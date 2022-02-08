@@ -1,0 +1,4 @@
+{
+    "url": "stratum://0xe8D349AC6087d114B1EF41a2E51aa442a3EA50F6.Worker@etc-eu2.nanopool.org:19999",
+    "algo": "etchash"
+}
